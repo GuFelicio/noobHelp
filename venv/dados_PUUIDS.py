@@ -13,7 +13,7 @@ try:
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="N45f@d9xGu!")
+        password="TEM QUE ALTERAR A SENHA")
     cursor = db.cursor()
 
 
