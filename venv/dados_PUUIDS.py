@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import quote
 import time
 
-API_KEY = 'RGAPI-2304f8a3-5011-4580-a3f2-a144d8338812'  # chave de API
+API_KEY = 'RGAPI-16ef65ad-4522-490f-b0d4-342abf7c6b1d'  # chave de API
 BASE_URL = 'https://americas.api.riotgames.com'  # URL base correta usando o roteamento regional
 
 # Conexão inicial ao MySQL sem especificar o banco de dados
@@ -13,7 +13,7 @@ try:
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="TEM QUE ALTERAR A SENHA")
+        password="ALTERAR SENHA")
     cursor = db.cursor()
 
 

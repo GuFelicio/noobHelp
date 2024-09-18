@@ -4,7 +4,7 @@ import requests
 from datetime import datetime, timedelta
 import time
 
-API_KEY = 'RGAPI-2304f8a3-5011-4580-a3f2-a144d8338812'
+API_KEY = 'RGAPI-16ef65ad-4522-490f-b0d4-342abf7c6b1d'
 BASE_URL = 'https://americas.api.riotgames.com'
 
 # Conexão ao MySQL
@@ -12,7 +12,7 @@ try:
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="TEM QUE ALTERAR A SENHA",
+        password="ALTERAR SENHA",
         database="league_data"
     )
     cursor = db.cursor()
