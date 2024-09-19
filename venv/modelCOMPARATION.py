@@ -4,6 +4,7 @@ from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from sklearn.preprocessing import LabelEncoder
+import joblib
 
 # Carregar os dados transformados do CSV
 data_path = r"F:\Devs\helpNBlol\match_details_transformed.csv"
@@ -19,6 +20,10 @@ if 'gameResult' not in data.columns:
 # Codificar 'gameResult' de categórico ('Win', 'Loss') para numérico (1, 0)
 label_encoder = LabelEncoder()
 data['gameResult'] = label_encoder.fit_transform(data['gameResult'])  # Transforma Win -> 1 e Loss -> 0
+
+# Salvar o LabelEncoder para uso posterior
+label_encoder_path = r"F:\Devs\helpNBlol\label_encoder.pkl"
+joblib.dump(label_encoder, label_encoder_path)
 
 # Verificar a distribuição de classes no dataset completo
 class_distribution = data['gameResult'].value_counts()
@@ -80,5 +85,18 @@ for model_name, model in models.items():
     print(f"Recall: {recall:.2f}")
 
 # Exibir o melhor modelo baseado na acurácia
-best_model = max(results, key=lambda x: results[x]["accuracy"])
-print(f"Melhor modelo: {best_model} com acurácia de {results[best_model]['accuracy']:.2f}")
+best_model_name = max(results, key=lambda x: results[x]["accuracy"])
+best_model = models[best_model_name]
+
+print(f"Melhor modelo: {best_model_name} com acurácia de {results[best_model_name]['accuracy']:.2f}")
+
+# Salvar o melhor modelo
+model_path = r"F:\Devs\helpNBlol\best_model.pkl"
+joblib.dump(best_model, model_path)
+
+# Salvar as colunas usadas no treinamento
+columns_path = r"F:\Devs\helpNBlol\original_columns.pkl"
+joblib.dump(X.columns, columns_path)
+
+
+print(f"Modelo {best_model_name} salvo em {model_path}")
