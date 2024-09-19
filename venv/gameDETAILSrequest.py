@@ -8,7 +8,7 @@ API_KEY = 'RGAPI-16ef65ad-4522-490f-b0d4-342abf7c6b1d'
 BASE_URL = 'https://americas.api.riotgames.com'
 
 # Configuração de Armazenamento
-LOCAL_STORAGE_PATH = r"F:\Devs\helpNBlol"  # Caminho de armazenamento local
+LOCAL_STORAGE_PATH = r"F:\Devs\helpNBlol\arquivosJSON"  # Caminho de armazenamento local
 
 # Configuração de conexão com o banco de dados MySQL
 db = mysql.connector.connect(
@@ -34,15 +34,37 @@ def match_ids_bd():
     return match_ids
 
 
+def get_game_result(teams_info):
+    """
+    Função para determinar o resultado da partida com base nos dados das equipes.
+    """
+    try:
+        for team in teams_info:
+            if team.get('win'):
+                return 'Win'
+        return 'Loss'
+    except Exception as e:
+        print(f"Erro ao processar o resultado da partida: {e}")
+        return 'Unknown'
+
+
 def detalhes_partida(match_id):
     """
     Função para coletar dados detalhados da partida usando a API da Riot Games.
+    Inclui a criação do campo gameResult com base no vencedor da partida.
     """
     url = f"{BASE_URL}/lol/match/v5/matches/{match_id}?api_key={API_KEY}"
     response = requests.get(url)
     if response.status_code == 200:
+        match_data = response.json()
+
+        # Extrair o resultado da partida
+        if 'info' in match_data and 'teams' in match_data['info']:
+            game_result = get_game_result(match_data['info']['teams'])
+            match_data['info']['gameResult'] = game_result  # Adiciona o resultado ao JSON
+
         print(f"Dados da partida {match_id} coletados com sucesso.")
-        return response.json()  # Retorna o JSON diretamente
+        return match_data  # Retorna o JSON diretamente com o gameResult atualizado
     else:
         print(f"Erro ao coletar dados da partida {match_id}: {response.status_code}")
         return None
